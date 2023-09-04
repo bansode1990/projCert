@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    stages {
+        stage('Verify version') {
+            steps {
+                script {
+                    def phpVersion = sh(script: 'php --version', returnStatus: true)
+                    if (phpVersion == 0) {
+                        echo "PHP version:"
+                        sh 'php --version'
+                    } else {
+                        error "PHP is not installed or the command failed."
+                    }
+                }
+            }
+        }
+        stage('Hello') {
+            steps {
+                script {
+                    sh 'php index.php'
+                }
+            }
+        }
+    }
+}
